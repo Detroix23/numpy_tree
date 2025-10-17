@@ -20,11 +20,8 @@ license-files = [
 ]
 
 [project.urls]
-Repository = "https://github.com/Detroix23/"
+Repository = "https://github.com/Detroix23/numpy_tree"
 
 [build-system]
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-py-modules = []

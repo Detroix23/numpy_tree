@@ -6,6 +6,8 @@ import numpy
 import numpy.typing
 from typing import Optional
 
+import base.iterables as iterables
+
 # Special header to take the actual branch value, and not the next branch.
 CURRENT: str = ""
 
@@ -115,136 +117,30 @@ headers={headers}, result={self.arrays[*indexes]} type={type(self.arrays[*indexe
         else:
             level = level_in
 
-        combinations: list[tuple[str, ...]] = headers_combinations(self.headers, level)
+        combinations: list[tuple[str, ...]] = iterables.headers_combinations(self.headers, level)
 
         tree: list[str] = list()
         indent: str
         last_x: bool
 
         for headers in combinations:
-            last_x = last_no_blank(headers) == self.headers[-1] or last_no_blank(headers) not in self.headers
+            last_x = (
+                iterables.last_no_blank(headers) == self.headers[-1] 
+                or iterables.last_no_blank(headers) not in self.headers
+            )
 
-            indent = " " * (indent_size * length_no_blank(headers))
+            indent = " " * (indent_size * iterables.length_no_blank(headers))
             
-            tree.append(f"{indent}{branch_last if last_x else branch}{last_no_blank(headers)}: {self.get(*headers)}\n")
+            tree.append(f"{indent}{branch_last if last_x else branch}{iterables.last_no_blank(headers)}: {self.get(*headers)}\n")
 
         return "".join(tree)
-    
-def last_no_blank(t: tuple[str, ...], origin: str = "Ω") -> str:
-    """
-    Return last element of tuple `t`, skiping blanks.
-    """
-    last: str = ""
-    index: int = len(t) - 1
-    while not last and index >= 0:
-        if t[index]:
-            last = t[index]
-        index -= 1
 
-    if not last:
-        last = origin
-
-    return last
-
-def length_no_blank(t: tuple[str, ...]) -> int:
-    """
-    Count non-`None` element in a tuple `t`.
-    """
-    length: int = 0
-    for element in t:
-        if element:
-            length += 1
-
-    return length
-
-def headers_combinations(headers: tuple[str, ...], level: int) -> list[tuple[str, ...]]:
-    """
-    Get all headers combinations.
-    Also add the `CURRENT` constant, but only when it ends with it.
-    """
-    if level <= 1:
-        return [(header, ) for header in headers]
-    
-    combinations: list[tuple[str, ...]] = list()
-    
-    for h1 in headers:
-        for h2 in headers_combinations(headers, level - 1):
-            t: tuple[str, ...] = (h1,) + h2
-            if end_or_no_blank(t):
-                combinations.append(t)
-
-    return combinations
-
-def end_or_no_blank(t: tuple[str, ...]) -> bool:
-    """
-    Return True if `t` only ends or has no blanks.
-    False if blanks at the start, or in the middle.
-    """
-    index: int = len(t) - 1
-    solid: bool = False
-    valid: bool = True
-    while valid and index >= 0:
-        if t[index]:
-            solid = True
-        if solid and not t[index]:
-            valid = False
-        index -= 1
-
-    return valid
 
 
 def main() -> None:
-    print("# Tree")
-    print("## TREE")
-    
-    a1: numpy.typing.NDArray[numpy.int64] = numpy.array([[
-            [1, 2, 3, 4],
-            [4, 5, 6, 7],
-            [7, 8, 9, 10],
-            [10, 11, 12, 13],
-        ], [
-            [5, 2, 3, 4],
-            [4, 5, 6, 7],
-            [7, 8, 9, 10],
-            [10, 11, 12, 13],
-        ], [
-            [7, 2, 3, 4],
-            [4, 5, 6, 7],
-            [7, 8, 9, 10],
-            [10, 11, 12, 13],
-        ], [
-            [7, 2, 3, 4],
-            [4, 5, 6, 7],
-            [7, 8, 9, 10],
-            [10, 11, 12, 13],
-        ],
-    ], dtype=numpy.int64)
-            
-    h1: tuple[str, ...] = ("A", "B", "C")
-    t1 = Tree(a1, h1)
+    print("## TREE.")
+    print("cf. `exemples.py`")
 
-    g: tuple[str, ...]
-
-    print(t1)
-    g = ("A", "C")
-    print("-", g, t1.get(*g))
-    g = ("A",)
-    print("-", g, t1.get(*g))
-    g = ("A", CURRENT)
-    print("-", g, t1.get(*g))
-    g = (CURRENT,)
-    print("-", g, t1.get(*g))
-    g = ("C", "A")
-    t1.update(34, *g)
-    
-    print()
-    print("-", t1.arrays)
-    
-    
-    print()
-    print(t1.string_tree())
-    
-    
 if __name__ == "__main__":
     main()
     
