@@ -1,6 +1,6 @@
 [project]
-name = "tree_detroix23"
-version = "0.0.1"
+name = "numpy_tree_detroix23"
+version = "0.1.0"
 description = "Numpy tree."
 authors = [
     { name="Detroix23", email="detroix23@gmail.com" }
