@@ -1,10 +1,14 @@
-# Venv
+# Venv.
 /venv
 /.venv
 
-# Python
+# Python.
 **.pyc
 */__pycache__
 
-# Doc
+# Distribution.
+*.egg-info
+/dist
+
+# Doc.
 !README.md

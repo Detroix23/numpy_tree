@@ -16,13 +16,13 @@ Using numpy to make a regular tree.
       └─ C: 10
    :
 """
-import base.exemples
+from numpy_tree_detroix23.base import exemples
 
 
 def main() -> None:
     print("# Tree")
 
-    base.exemples.main()
+    exemples.main()
 
 if __name__ == "__main__":
     main()

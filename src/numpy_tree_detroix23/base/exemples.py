@@ -6,7 +6,7 @@ exemples.py
 import numpy
 import numpy.typing
 
-import base.tree as tree
+from . import tree
 
 def main() -> None:
     print("## EXEMPLES.")

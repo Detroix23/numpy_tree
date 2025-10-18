@@ -6,7 +6,7 @@ import numpy
 import numpy.typing
 from typing import Optional
 
-import base.iterables as iterables
+from . import iterables
 
 # Special header to take the actual branch value, and not the next branch.
 CURRENT: str = ""
