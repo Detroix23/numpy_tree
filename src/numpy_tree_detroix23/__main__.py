@@ -16,7 +16,7 @@ Using numpy to make a regular tree.
       └─ C: 10
    :
 """
-from numpy_tree_detroix23.base import exemples
+import base.exemples as exemples
 
 
 def main() -> None:
